@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('layout/head') -%>
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <%- include('layout/navBar') -%>
+
+    <div class="container mt-5">
+      <h1 class="mb-4">Cart</h1>
+
+      <div class="row">
+        <% if (cartItems.length > 0) { %> <% cartItems.forEach(cartItem => { %>
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card">
+            <img
+              src="<%= cartItem.product.image_url %>"
+              class="card-img-top img-fluid"
+              alt="<%= cartItem.product.name %>"
+              style="
+                max-width: 60%;
+                height: auto;
+                max-height: 300px;
+                margin: auto;
+              "
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%= cartItem.product.name %></h5>
+              <p class="card-text">Quantity: <%= cartItem.quantity %> items</p>
+              <p class="card-text">
+                <strong>$<%= cartItem.product.price %></strong>
+              </p>
+            </div>
+          </div>
+        </div>
+        <% }); %>
+        <form action="/grocery/buy" method="post" class="col-12 mt-3">
+          <button type="submit" class="btn btn-primary btn-block">Buy</button>
+        </form>
+        <% } else { %>
+        <p class="empty-cart">Your cart is empty</p>
+        <% } %>
+      </div>
+    </div>
+    <%- include('layout/footer') -%>
+  </body>
+</html>

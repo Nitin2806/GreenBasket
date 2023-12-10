@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('layout/head') -%>
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <%- include('layout/navBar') -%>
+    <header class="header">
+      <div class="header-container">
+        <h1>Welcome to GreenBacket</h1>
+        <p>Quality Fresh Produce Right at Your Doorstep</p>
+      </div>
+    </header>
+
+    <section class="grocery-section">
+      <div class="container">
+        <h2>Fresh Produce Categories</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <img src="/images/fruits.jpg" alt="Fruits" class="img-fluid" />
+            <h3>Fruits</h3>
+            <p>Explore a variety of fresh and delicious fruits.</p>
+          </div>
+          <div class="col-md-4">
+            <img
+              src="/images/vegetables.jpg"
+              alt="Vegetables"
+              class="img-fluid"
+            />
+            <h3>Vegetables</h3>
+            <p>Discover farm-fresh vegetables for your daily needs.</p>
+          </div>
+          <div class="col-md-4">
+            <img src="/images/organic.jpg" alt="Organic" class="img-fluid" />
+            <h3>Organic Choices</h3>
+            <p>
+              Choose from our selection of organic and pesticide-free options.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%- include('layout/footer') -%>
+  </body>
+</html>
