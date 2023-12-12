@@ -1,3 +1,7 @@
+//      Group Members
+// Nitin Mishra - 8891046
+// Rachna Shukla - 8922636
+// Kritagya Mishra - 8899402
 const db = require("../dbService");
 
 exports.home = (req, res) => {

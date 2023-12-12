@@ -31,6 +31,14 @@
               <p class="card-text">
                 <strong>$<%= cartItem.product.price %></strong>
               </p>
+              <form action="/grocery/cart/delete" method="post">
+                <input
+                  type="hidden"
+                  name="productId"
+                  value="<%= cartItem.product.id %>"
+                />
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
             </div>
           </div>
         </div>

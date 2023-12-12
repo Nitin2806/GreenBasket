@@ -1,4 +1,7 @@
-// models/User.js
+//      Group Members
+// Nitin Mishra - 8891046
+// Rachna Shukla - 8922636
+// Kritagya Mishra - 8899402
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 

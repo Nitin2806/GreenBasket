@@ -1,3 +1,7 @@
+//      Group Members
+// Nitin Mishra - 8891046
+// Rachna Shukla - 8922636
+// Kritagya Mishra - 8899402
 const db = require("../dbService");
 
 exports.signup = (req, res) => {
@@ -67,14 +71,22 @@ exports.verifyLogin = (req, res) => {
           };
           loggedIn = req.session.user;
 
-          res.redirect("/"); // Redirect to home
+          res.redirect("/");
         } else {
           console.log("Invalid username or password");
-          res.redirect("/login"); // Redirect back to login page
+          res.redirect("/login");
         }
       }
     });
   } catch (err) {
     return res.status(500);
   }
+};
+
+exports.logout = (req, res) => {
+  console.log("Logout");
+  loggedIn = null;
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
 };
