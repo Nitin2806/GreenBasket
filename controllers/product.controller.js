@@ -4,6 +4,9 @@
 // Kritagya Mishra - 8899402
 const puppeteer = require("puppeteer");
 const db = require("../dbService");
+const { readFileSync } = require("fs");
+const opener = require("opener");
+const path = require("path");
 
 const generateInvoicePDF = async (req, res, product) => {
   const browser = await puppeteer.launch({ headless: "new" });
@@ -16,57 +19,78 @@ const generateInvoicePDF = async (req, res, product) => {
 
   const content = `
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f4f4;
-      margin: 20px;
-    }
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 20px;
+  }
 
-    .invoice-container {
-      width: 80%;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+  .logo-container {
+    text-align: center;
+  }
 
-    h1, h3 {
-      color: #2ecc71;
-    }
+  .logo {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
+  .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
+  .invoice-container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 
-    th {
-      background-color: #2ecc71;
-      color: #fff;
-    }
+  h1, h3 {
+    color: #2ecc71;
+    text-align: center;
+  }
 
-    td {
-      background-color: #fff;
-    }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
 
-    p {
-      margin-bottom: 10px;
-    }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
 
-    .total-section {
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 1.2em;
-    }
-  </style>
+  th {
+    background-color: #2ecc71;
+    color: #fff;
+  }
+
+  td {
+    background-color: #fff;
+  }
+
+  p {
+    margin-bottom: 10px;
+  }
+
+  .total-section {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-align: right;
+  }
+</style>
   
   <div class="invoice-container">
+  <div class="logo"><img src="data:image/jpeg;base64,${readFileSync(
+    "./controllers/android-chrome-512x512.png"
+  ).toString("base64")}" alt="alt text" /></div>
     <h1>GreenBasket</h1>
     <h3>Invoice</h3>
     <p>Date: ${new Date().toLocaleDateString()}</p>
@@ -110,8 +134,11 @@ const generateInvoicePDF = async (req, res, product) => {
     printBackground: true,
     format: "A4",
   });
+  const pdfPath = path.join(__dirname, "../invoice.pdf");
+  console.log(pdfPath);
 
   await browser.close();
+  opener(pdfPath);
 };
 
 // const loadCart = async (req, res) => {
@@ -226,30 +253,21 @@ exports.getCart = async (req, res) => {
 };
 
 exports.addToCart = async (req, res) => {
-  console.log("addToCart Page");
   try {
     const userId = req.session.user.id;
 
     const { productId } = req.body;
     req.session.cart = req.session.cart || [];
-    console.log("addToCart 1", req.session.cart);
 
     const productIdInt = parseInt(productId, 10);
 
     const existingCartItemIndex = req.session.cart.findIndex((item) => {
-      console.log("Item from existing cart", item);
-      console.log(
-        typeof item.product_id,
-        typeof productIdInt,
-        parseInt(item.product_id)
-      );
       if (item.product_id == productIdInt) {
         return true;
       } else {
         return false;
       }
     });
-    console.log("existingCartItemIndex", existingCartItemIndex);
 
     if (existingCartItemIndex !== -1) {
       req.session.cart[existingCartItemIndex].quantity += 1;
@@ -281,9 +299,16 @@ exports.addToCart = async (req, res) => {
 exports.buy = async (req, res) => {
   try {
     const cartProduct = req.session.cart || [];
+    // console.log(cartProduct);
+    const userId = req.session.user.id;
+    totalAmount = 10;
+    const insertInvoiceQuery =
+      "INSERT INTO invoices (user_id, total_amount) VALUES (?, ?)";
+    const insertInvoiceValues = [userId, totalAmount];
+    await db.query(insertInvoiceQuery, insertInvoiceValues);
 
     await generateInvoicePDF(req, res, cartProduct);
-    db.query("DELETE FROM cart");
+    db.query(`DELETE FROM cart where user_id = ${userId}`);
     res.redirect("/");
   } catch (err) {
     console.error(err);

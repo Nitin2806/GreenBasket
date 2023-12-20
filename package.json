@@ -19,6 +19,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.6.5",
     "nodemon": "^3.0.1",
+    "opener": "^1.5.2",
     "puppeteer": "^21.6.0",
     "sequelize": "^6.35.1",
     "sequelize-cli": "^6.6.2",

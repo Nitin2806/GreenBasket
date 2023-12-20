@@ -67,8 +67,26 @@ exports.contact = (req, res) => {
   res.render("contact", { title: "Contact | GreenBasket" });
 };
 exports.login = (req, res) => {
-  res.render("login", { title: "Login | GreenBasket" });
+  res.render("login", { error: "", title: "Login | GreenBasket" });
 };
 exports.register = (req, res) => {
   res.render("register", { title: "Register | GreenBasket" });
+};
+
+exports.contactform = (req, res) => {
+  console.log(req.body.name);
+  const sql = "INSERT INTO contact (name, email, message) VALUES (?, ?, ?)";
+  db.query(
+    sql,
+    [req.body.name, req.body.email, req.body.message],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data:", err);
+        res.status(500).send("Error submitting message");
+      } else {
+        console.log("Message submitted successfully");
+        res.render("home", { title: "Home | GreenBasket" });
+      }
+    }
+  );
 };

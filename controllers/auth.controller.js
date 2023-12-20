@@ -20,16 +20,7 @@ exports.login = (req, res) => {
 };
 exports.createAccount = (req, res) => {
   try {
-    console.log("createAccount");
     const { username, firstname, lastname, email, password } = req.body;
-    console.log(
-      "createAccount",
-      username,
-      firstname,
-      lastname,
-      email,
-      password
-    );
 
     const query =
       "INSERT INTO users (username,first_name,last_name,email, password) VALUES (?, ?,?, ?, ?)";
@@ -42,7 +33,7 @@ exports.createAccount = (req, res) => {
           res.status(500).send("Internal Server Error");
         } else {
           console.log("User signed up successfully");
-          res.redirect("/login");
+          res.render("login");
         }
       }
     );
@@ -73,8 +64,7 @@ exports.verifyLogin = (req, res) => {
 
           res.redirect("/");
         } else {
-          console.log("Invalid username or password");
-          res.redirect("/login");
+          res.render("login", { error: "Invalid username or password" });
         }
       }
     });

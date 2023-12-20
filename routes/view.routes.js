@@ -13,5 +13,6 @@ viewRouter.get("/contact", viewController.contact);
 viewRouter.get("/about", viewController.about);
 viewRouter.get("/login", viewController.login);
 viewRouter.get("/register", viewController.register);
+viewRouter.post("/contact", viewController.contactform);
 
 module.exports = viewRouter;

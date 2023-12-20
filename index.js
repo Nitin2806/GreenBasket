@@ -23,7 +23,7 @@ global.gproducts = null;
 // Routes
 app.use(router);
 app.use(authUserMiddleware);
-app.use(errorHandler);
+// app.use(errorHandler);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

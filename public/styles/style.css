@@ -201,3 +201,24 @@ footer {
   background: #212529;
   color: #ffffff;
 }
+
+#increase-font,
+#decrease-font {
+  background-color: #3f43fd;
+  border: none;
+  color: #fff;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+#increase-font:hover,
+#decrease-font:hover {
+  background-color: #3235c5; /* Darker green on hover */
+}
